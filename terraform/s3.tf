@@ -4,6 +4,7 @@
 
 resource "aws_s3_bucket" "uploads" {
   bucket = "${var.project_name}--uploads-${random_id.suffix.hex}"
+  force_destroy = true
 
   tags = {
     Project = var.project_name
