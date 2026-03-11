@@ -24,7 +24,7 @@ An event-driven cloud pipeline that automatically processes uploaded images usin
 |--------|----------|-------------|
 | GET | `/uploads` | Returns all uploaded images |
 | GET | `/uploads/{id}` | Returns a specific image with its Rekognition labels |
-| GET | `/uploads?tag=dog` | Filters images by label |
+
 
 ---
 
