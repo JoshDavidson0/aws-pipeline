@@ -20,3 +20,8 @@ output "rds_db_name" {
 output "ec2_public_ip" {
   value = aws_instance.app.public_ip
 }
+
+output "ecr_repository_url" {
+  description = "The ECR repository URL for pushing and pulling the Docker image"
+  value       = aws_ecr_repository.app.repository_url
+}
