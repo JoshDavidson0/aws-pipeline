@@ -81,7 +81,9 @@ resource "aws_instance" "app" {
   vpc_security_group_ids = [aws_security_group.ec2.id]
   key_name               = var.key_pair_name
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  user_data_replace_on_change = true
 
+  user_data = file("${path.module}/ec2_bootstrap.sh")
   tags = {
     Name = "${var.project_name}-ec2"
   }
