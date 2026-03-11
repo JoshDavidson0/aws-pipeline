@@ -50,7 +50,7 @@ resource "aws_iam_role_policy" "lambda_permissions" {
     {
         Effect = "Allow"
         Action = ["s3:GetObject"]
-        Resource = "arn:aws:s3:::pipelineiq--uploads-01f810ed/*"
+        Resource = "arn:aws:s3:::pipelineiq--uploads-*/*"
     },
     {
     Effect = "Allow"

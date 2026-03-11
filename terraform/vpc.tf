@@ -62,6 +62,7 @@ resource "aws_security_group" "rds" {
     }
 }
 
+# Allowing Lambda to reach Rekognition and Secrets manager over HTTPS on port 443.
 resource "aws_security_group" "vpc_endpoints" {
     name   = "${var.project_name}-endpoints-sg"
     vpc_id = aws_vpc.main.id
@@ -79,7 +80,7 @@ resource "aws_security_group" "vpc_endpoints" {
         protocol    = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
-    
+
     tags = { Name = "${var.project_name}-endpoints-sg" }
 }
 
@@ -112,7 +113,7 @@ resource "aws_vpc_endpoint" "s3" {
     tags = { Name = "${var.project_name}-s3-endpoint" }
 }
 
-# private route tables
+# Private route tables give Lambda a path to Rekognition.
 
 resource "aws_route_table" "private" {
     vpc_id = aws_vpc.main.id

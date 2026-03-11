@@ -15,7 +15,7 @@ resource "aws_lambda_function" "processor" {
     runtime = "python3.12"
     source_code_hash = data.archive_file.lambda_zip.output_base64sha256
     timeout = 30
-    layers = ["arn:aws:lambda:us-east-1:688933601990:layer:psycopg2-layer-37:1"]
+    layers = ["arn:aws:lambda:us-east-1:688933601990:layer:psycopg2-layer-312:1"]
 
     environment {
       variables = {
@@ -34,7 +34,26 @@ resource "aws_lambda_function" "processor" {
     }
 }
 
+# Gives S3 permission to invoke the Lambda function when a file is uploaded
+resource "aws_lambda_permission" "s3_invoke" {
+    statement_id  = "AllowS3Invoke"
+    action        = "lambda:InvokeFunction"
+    function_name = aws_lambda_function.processor.function_name
+    principal     = "s3.amazonaws.com"
+    source_arn    = aws_s3_bucket.uploads.arn
+}
 
+# Wires the S3 bucket to trigger Lambda automatically on every new file upload
+resource "aws_s3_bucket_notification" "upload_trigger" {
+    bucket = aws_s3_bucket.uploads.id
+
+    lambda_function {
+        lambda_function_arn = aws_lambda_function.processor.arn
+        events              = ["s3:ObjectCreated:*"]
+    }
+
+    depends_on = [aws_lambda_permission.s3_invoke]
+}
 
 
 
